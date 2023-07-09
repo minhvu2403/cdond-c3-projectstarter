@@ -1,5 +1,10 @@
 version: 2.1
 
+parameters:
+  workflow_id:
+    type: string
+    default: "${CIRCLE_WORKFLOW_ID:0:7}"
+
 commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -244,6 +249,7 @@ jobs:
       # Destroy infrastructure if job fails to prevent unnecessary costs
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+
   run-migrations:
     docker:
       # Use node image to run migrations and send results to kvdb
